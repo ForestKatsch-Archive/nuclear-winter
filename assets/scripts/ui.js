@@ -35,14 +35,14 @@ function ui_init() {
     });
     
     $("#canvas").mousemove(function(e) {
-//	if(prop.ui.drag.dragging == true) {
+	if(prop.ui.drag.dragging == true) {
 	    var offset={
 		x:prop.ui.drag.start_mouse.x-e.pageX,
 		y:prop.ui.drag.start_mouse.y-e.pageY
 	    };
 	    prop.canvas.pan.x=prop.ui.drag.start_offset.x-offset.x;
 	    prop.canvas.pan.y=prop.ui.drag.start_offset.y-offset.y;
-//	}
+	}
     });
     
     $("#canvas").mouseup(function(e) {
