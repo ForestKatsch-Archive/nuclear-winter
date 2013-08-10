@@ -1,7 +1,13 @@
 
 var VERSION=[0,0,1];
 
-var modules=["prop","ui","canvas","map"];
+var modules=[
+    "prop",
+    "style",
+    "map",
+    "ui",
+    "canvas"
+];
 var module_number=0;
 var module_start_time;
 
