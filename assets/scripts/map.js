@@ -4,13 +4,22 @@ var Tile=function(pos) {
 	x:pos[0],
 	y:pos[1]
     };
+    this.type=choose(["snow","grass"]);
+    if(this.pos.x < 0) {
+	this.type="water";
+	this.depth=-this.pos.x*prop.map.tile.radius;
+    }
+    if(this.pos.x == 0) {
+	this.type="sand";
+    }
 };
 
 function map_init() {
     prop.map={};
 
     prop.map.tile={};
-    prop.map.tile.radius=300; // radius of single tile in meters
+    prop.map.tile.radius=100; // radius of single tile in meters
+    prop.map.tile.gap=4; // gap between tiles (display only, actual size is the same);
 
     prop.map.tiles={};
 
@@ -21,7 +30,7 @@ function map_init() {
 }
 
 function map_generate() {
-    var size=20;
+    var size=30;
     for(var x=-size;x<size;x++) {
 	for(var y=-size;y<size;y++) {
 	    prop.map.tiles[map_tile_name(x,y)]=new Tile([x,y]);

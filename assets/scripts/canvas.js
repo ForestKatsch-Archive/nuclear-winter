@@ -20,8 +20,8 @@ function canvas_init() {
 
     for(var i=0;i<6;i++) {
 	var angle=(i/6)*Math.PI*2;
-	prop.canvas.hexagon.push([f(Math.cos(angle)*prop.map.tile.radius/2.075),
-				 f(Math.sin(angle)*prop.map.tile.radius/2.075)]);
+	prop.canvas.hexagon.push([f(Math.cos(angle)*(prop.map.tile.radius-prop.map.tile.gap)/2),
+				  f(Math.sin(angle)*(prop.map.tile.radius-prop.map.tile.gap)/2)]);
     }
 
     loaded("canvas");
@@ -46,19 +46,64 @@ function canvas_hexagon() {
     }
 }
 
-function canvas_draw_tile(t) {
-    prop.canvas.context.save();
-    prop.canvas.context.translate(prop.style.shadow.offset.x,
-				  prop.style.shadow.offset.y);
-    prop.canvas.context.beginPath();
-    canvas_hexagon();
-    prop.canvas.context.fillStyle=prop.style.shadow.color;
-    prop.canvas.context.fill();
-    prop.canvas.context.restore();
+function canvas_draw_tile_snow(t) {
     prop.canvas.context.beginPath();
     canvas_hexagon();
     prop.canvas.context.fillStyle=prop.style.tiles.snow.color;
     prop.canvas.context.fill();
+}
+
+function canvas_draw_tile_grass(t) {
+    prop.canvas.context.beginPath();
+    canvas_hexagon();
+    prop.canvas.context.fillStyle=prop.style.tiles.grass.color;
+    prop.canvas.context.fill();
+}
+
+function canvas_draw_tile_sand(t) {
+    prop.canvas.context.beginPath();
+    canvas_hexagon();
+    prop.canvas.context.fillStyle=prop.style.tiles.sand.color;
+    prop.canvas.context.fill();
+}
+
+function canvas_draw_tile_water(t) {
+    prop.canvas.context.beginPath();
+    canvas_hexagon();
+    prop.canvas.context.fillStyle=prop.style.tiles.water.color;
+    prop.canvas.context.fill();
+    prop.canvas.context.globalAlpha=trange(0,t.depth,prop.map.tile.radius*prop.style.tiles.water.deep,0,1);
+    prop.canvas.context.setCompositeOperation="darker";
+    prop.canvas.context.fillStyle=prop.style.tiles.water.deep_color;
+    prop.canvas.context.fill();
+    prop.canvas.context.globalAlpha=1;
+}
+
+function canvas_draw_tile_shadow(t) {
+    prop.canvas.context.save();
+    prop.canvas.context.translate(prop.style.tiles[t.type].shadow.offset.x,
+				  prop.style.tiles[t.type].shadow.offset.y);
+    prop.canvas.context.beginPath();
+    canvas_hexagon();
+    prop.canvas.context.fillStyle=prop.style.tiles[t.type].shadow.color;
+    prop.canvas.context.fill();
+    prop.canvas.context.restore();
+}
+
+function canvas_draw_tile(t) {
+    if(t.type == TILE_TYPE_WATER) {
+	canvas_draw_tile_shadow(t);
+	canvas_draw_tile_water(t);
+    } else if(t.type == TILE_TYPE_SNOW) {
+	canvas_draw_tile_shadow(t);
+	canvas_draw_tile_snow(t);
+    } else if(t.type == TILE_TYPE_GRASS) {
+	canvas_draw_tile_shadow(t);
+	canvas_draw_tile_grass(t);
+    } else if(t.type == TILE_TYPE_SAND) {
+	canvas_draw_tile_shadow(t);
+	canvas_draw_tile_sand(t);
+    }
 }
 
 function canvas_draw_tiles() {
