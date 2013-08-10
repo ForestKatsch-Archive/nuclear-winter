@@ -36,7 +36,7 @@ function s(i) {
 }
 
 function trange(il,i,ih,ol,oh) {
-    i=i/(ih-il)-il;
+    i=(i/(ih-il))-il;
     return (i*(oh-ol))+ol;
 }
 

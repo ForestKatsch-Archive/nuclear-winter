@@ -4,8 +4,9 @@ var MOUSE_LEFT=1;
 function ui_init() {
     prop.ui={};
 
-    prop.ui.scroll={};
-    prop.ui.scroll.sensitivity=25;
+    prop.ui.zoom={};
+    prop.ui.zoom.min=0.5;
+    prop.ui.zoom.max=10;
 
     prop.ui.drag={};
     prop.ui.drag.dragging=false;
@@ -19,9 +20,9 @@ function ui_init() {
     };
 
     $("#canvas").mousewheel(function(e,d,dx,dy) {
-	prop.canvas.pan.x-=dx*prop.ui.scroll.sensitivity;
-	prop.canvas.pan.y+=dy*prop.ui.scroll.sensitivity;
-	map_resize();
+	prop.canvas.zoom+=dy/5*prop.canvas.zoom;
+	prop.canvas.zoom=Math.max(prop.ui.zoom.min,prop.canvas.zoom);
+	prop.canvas.zoom=Math.min(prop.ui.zoom.max,prop.canvas.zoom);
     });
 			
     $("#canvas").mousedown(function(e) {
@@ -40,8 +41,8 @@ function ui_init() {
 		x:prop.ui.drag.start_mouse.x-e.pageX,
 		y:prop.ui.drag.start_mouse.y-e.pageY
 	    };
-	    prop.canvas.pan.x=prop.ui.drag.start_offset.x-offset.x;
-	    prop.canvas.pan.y=prop.ui.drag.start_offset.y-offset.y;
+	    prop.canvas.pan.x=prop.ui.drag.start_offset.x-offset.x*4;
+	    prop.canvas.pan.y=prop.ui.drag.start_offset.y-offset.y*4;
 	}
     });
     

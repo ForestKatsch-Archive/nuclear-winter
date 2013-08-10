@@ -12,14 +12,18 @@ var Tile=function(pos) {
     if(this.pos.x == 0) {
 	this.type="sand";
     }
+    if(this.pos.x == 1) {
+	if(Math.random() >= 0.5)
+	    this.type="sand";
+    }
 };
 
 function map_init() {
     prop.map={};
 
     prop.map.tile={};
-    prop.map.tile.radius=100; // radius of single tile in meters
-    prop.map.tile.gap=4; // gap between tiles (display only, actual size is the same);
+    prop.map.tile.radius=200; // radius of single tile in meters
+    prop.map.tile.gap=10; // gap between tiles (display only, actual size is the same);
 
     prop.map.tiles={};
 
@@ -30,7 +34,7 @@ function map_init() {
 }
 
 function map_generate() {
-    var size=30;
+    var size=50;
     for(var x=-size;x<size;x++) {
 	for(var y=-size;y<size;y++) {
 	    prop.map.tiles[map_tile_name(x,y)]=new Tile([x,y]);
